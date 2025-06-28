@@ -114,7 +114,6 @@ type OrExpr struct {
 }
 
 func (e *OrExpr) Eval(ctx *Context) bool {
-	fmt.Printf("domain: %s, or: %v, %v\n", ctx.Domain, e.Left, e.Right)
 	return e.Left.Eval(ctx) || e.Right.Eval(ctx)
 }
 
