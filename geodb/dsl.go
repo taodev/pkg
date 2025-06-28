@@ -58,7 +58,6 @@ func LoadRule(code string) (*Rule, error) {
 	if err != nil {
 		return nil, err
 	}
-	DebugExpr(cond)
 	for _, arg := range call.Args[1:] {
 		right, err := buildExpr(arg)
 		if err != nil {
