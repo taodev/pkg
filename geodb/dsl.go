@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+var GeoSitePath = "geosite.dat"
+
 type Helper struct {
 	File         string
 	Line, Column int
@@ -81,7 +83,7 @@ func buildExpr(node ast.Expr) (Expr, error) {
 			return buildTagExpr(v.Args, func(tags []string) (Expr, error) {
 				var expr GeoSiteExpr
 				for _, tag := range tags {
-					matcher, err := Site("geosite.dat", tag)
+					matcher, err := Site(GeoSitePath, tag)
 					if err != nil {
 						return nil, fmt.Errorf("geosite:%s - %w", tag, err)
 					}
