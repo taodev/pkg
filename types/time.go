@@ -13,5 +13,13 @@ func (t *Time) Format(v string) {
 }
 
 func (t Time) String() string {
-	return time.Unix(int64(t), 0).Format("2006-01-02")
+	return time.Unix(int64(t), 0).Format("2006-01-02 15:04:05")
+}
+
+func (t Time) ToTime() time.Time {
+	return time.Unix(int64(t), 0)
+}
+
+func (t *Time) FromTime(v time.Time) {
+	*t = Time(v.Unix())
 }
