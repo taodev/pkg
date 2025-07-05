@@ -14,7 +14,7 @@ func TestTimeWindow(t *testing.T) {
 	)
 
 	for i := int64(0); i < times; i++ {
-		c1 := 100000 + i
+		c1 := int64(100000 + i)
 		w1 := TimeWindow(c1, tolerance)
 		for j := int64(0); j < times/2; j++ {
 			c2 := c1 - times/4 + j
