@@ -32,3 +32,6 @@ go.work.sum
 # .vscode/
 
 test/
+
+*.html
+*.out
