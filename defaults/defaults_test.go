@@ -202,6 +202,34 @@ func TestDefault(t *testing.T) {
 		assert.Equal(t, 25, t1.FieldMapMapPtr["a"]["a"].B)
 		assert.Equal(t, 0, t1.FieldMapMapPtr["a"]["a"].C)
 	})
+
+	// 测试覆盖
+	t.Run("Cover", func(t *testing.T) {
+		t1 := struct {
+			A1      int `default:"1"`
+			A2      int `default:"2"`
+			Struct1 struct {
+				A int `default:"1"`
+			}
+			Struct2 struct {
+				A1 int `default:"2"`
+				A2 int `default:"3"`
+			}
+			Struct3 *struct {
+				A1 int `default:"2"`
+				A2 int `default:"3"`
+			}
+		}{}
+
+		t1.A2 = 3
+		t1.Struct2.A1 = 10
+		require.NoError(t, Set(&t1))
+		assert.Equal(t, 1, t1.A1)
+		assert.Equal(t, 3, t1.A2)
+		assert.Equal(t, 10, t1.Struct2.A1)
+		assert.Equal(t, 3, t1.Struct2.A2)
+		assert.Nil(t, t1.Struct3)
+	})
 }
 
 func TestDefaultsError(t *testing.T) {
