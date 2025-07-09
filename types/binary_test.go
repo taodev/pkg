@@ -34,6 +34,18 @@ func TestBinary(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, []byte(strData), []byte(b))
 
+	// unknown tag
+	assert.Error(t, b.UnmarshalYAML(&yaml.Node{
+		Tag:   "!!int",
+		Value: base64Data,
+	}))
+
+	// error value
+	assert.Error(t, b.UnmarshalYAML(&yaml.Node{
+		Tag:   "!!binary",
+		Value: "error value",
+	}))
+
 	yamlStruct := &struct {
 		Value1 Binary `yaml:"value1"`
 		Value2 Binary `yaml:"value2"`
