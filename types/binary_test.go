@@ -13,7 +13,7 @@ import (
 
 func TestBinary(t *testing.T) {
 	const (
-		base64Data = "SGVsbG8gQmluYXJ5IQ=="
+		base64Data = "SGVsbG8gQmluYXJ5IQ"
 		hexData    = "48656c6c6f2042696e61727921"
 		strData    = "Hello Binary!"
 	)
