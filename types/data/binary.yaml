@@ -1,0 +1,5 @@
+value1: !!binary SGVsbG8gQmluYXJ5IQ==
+value2: !!base64 SGVsbG8gQmluYXJ5IQ==
+value3: SGVsbG8gQmluYXJ5IQ==
+value4: !!hex 48656c6c6f2042696e61727921
+value5: [72, 101, 108, 108, 111, 32, 66, 105, 110, 97, 114, 121, 33]
