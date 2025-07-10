@@ -54,6 +54,15 @@ func (b Binary) String() string {
 	return base64.RawURLEncoding.EncodeToString(b)
 }
 
+func (b *Binary) Parse(str string) error {
+	decoded, err := base64.RawURLEncoding.DecodeString(str)
+	if err != nil {
+		return err
+	}
+	*b = decoded
+	return nil
+}
+
 func (b Binary) Bytes() []byte {
 	return b
 }

@@ -67,4 +67,12 @@ func TestBinary(t *testing.T) {
 	require.NoError(t, err)
 	log.Printf("%s", data)
 	assert.Contains(t, string(data), base64Data)
+
+	var b1 Binary
+	err = b1.Parse(base64Data)
+	require.NoError(t, err)
+	assert.Equal(t, []byte(strData), b1.Bytes())
+
+	err = b1.Parse("error data")
+	require.Error(t, err)
 }
