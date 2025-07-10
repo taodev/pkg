@@ -26,7 +26,7 @@ type Binary []byte
 func (b Binary) MarshalYAML() (any, error) {
 	return yaml.Node{
 		Kind:  yaml.ScalarNode,
-		Value: base64.RawStdEncoding.EncodeToString(b),
+		Value: base64.RawURLEncoding.EncodeToString(b),
 	}, nil
 }
 
@@ -35,7 +35,7 @@ func (b *Binary) UnmarshalYAML(value *yaml.Node) error {
 	var err error
 	switch value.Tag {
 	case BinaryTag, BinaryStrTag, BinaryBase64Tag:
-		decoded, err = base64.RawStdEncoding.DecodeString(value.Value)
+		decoded, err = base64.RawURLEncoding.DecodeString(value.Value)
 	case BinaryHexTag:
 		decoded, err = hex.DecodeString(value.Value)
 	case BinarySeqTag:
@@ -51,7 +51,7 @@ func (b *Binary) UnmarshalYAML(value *yaml.Node) error {
 }
 
 func (b Binary) String() string {
-	return base64.RawStdEncoding.EncodeToString(b)
+	return base64.RawURLEncoding.EncodeToString(b)
 }
 
 func (b Binary) Bytes() []byte {
