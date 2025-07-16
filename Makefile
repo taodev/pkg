@@ -1,3 +1,13 @@
+.PHONY: patch minor major test-cover clean-cover
+
+patch:
+	@bash scripts/tag.sh patch
+
+minor:
+	@bash scripts/tag.sh minor
+
+major:
+	@bash scripts/tag.sh major
 
 test-cover:
 	go test -coverprofile=cover.out ./...
