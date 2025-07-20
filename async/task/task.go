@@ -6,14 +6,12 @@ type Pool struct {
 	workerNum int
 	wg        sync.WaitGroup
 	taskCh    chan func()
-	closeCh   chan struct{}
 }
 
 func New(workerNum, bufferSize int) *Pool {
 	return &Pool{
 		workerNum: workerNum,
 		taskCh:    make(chan func(), bufferSize),
-		closeCh:   make(chan struct{}),
 	}
 }
 
@@ -26,17 +24,21 @@ func (p *Pool) Start() {
 
 func (p *Pool) worker() {
 	defer p.wg.Done()
+	var taskFn func()
+	var ok bool
 	for {
-		select {
-		case task := <-p.taskCh:
-			task()
-		case <-p.closeCh:
+		if taskFn, ok = <-p.taskCh; !ok {
 			return
 		}
+		taskFn()
 	}
 }
 
 func (p *Pool) Close() {
-	close(p.closeCh)
+	close(p.taskCh)
 	p.wg.Wait()
+}
+
+func (p *Pool) Do(task func()) {
+	p.taskCh <- task
 }
