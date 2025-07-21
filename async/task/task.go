@@ -1,10 +1,10 @@
 package task
 
-import "sync"
+import "golang.org/x/sync/errgroup"
 
 type Pool struct {
 	workerNum int
-	wg        sync.WaitGroup
+	wg        errgroup.Group
 	taskCh    chan func()
 }
 
@@ -17,26 +17,24 @@ func New(workerNum, bufferSize int) *Pool {
 
 func (p *Pool) Start() {
 	for i := 0; i < p.workerNum; i++ {
-		p.wg.Add(1)
-		go p.worker()
+		p.wg.Go(p.worker)
 	}
 }
 
-func (p *Pool) worker() {
-	defer p.wg.Done()
+func (p *Pool) worker() error {
 	var taskFn func()
 	var ok bool
 	for {
 		if taskFn, ok = <-p.taskCh; !ok {
-			return
+			return nil
 		}
 		taskFn()
 	}
 }
 
-func (p *Pool) Close() {
+func (p *Pool) Close() error {
 	close(p.taskCh)
-	p.wg.Wait()
+	return p.wg.Wait()
 }
 
 func (p *Pool) Do(task func()) {
