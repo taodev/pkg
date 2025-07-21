@@ -36,3 +36,4 @@ test/
 *.html
 *.out
 .vscode/
+.vercel/
