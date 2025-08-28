@@ -33,8 +33,8 @@
 ✅ 风险：缓存挂了，没同步到数据库的数据会丢！（得搭配容灾方案）
 
 ## 6. 策略选择
-• 高频读、想简化流程 → Read Through
-• 数据一致性必须死磕 → Write Through
-• 读写都想灵活控 → Cache Aside
-• 写多、读不着急 → Write Around
-• 追求极致写性能、能接受小风险 → Write Back
+- 高频读、想简化流程 → Read Through
+- 数据一致性必须死磕 → Write Through
+- 读写都想灵活控 → Cache Aside
+- 写多、读不着急 → Write Around
+- 追求极致写性能、能接受小风险 → Write Back
