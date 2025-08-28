@@ -155,11 +155,21 @@ func WriteBackGet(adapter Adapter) (err error) {
 }
 
 func WriteBackSet(adapter Adapter) (err error) {
-	return adapter.Set()
+	if err = adapter.Set(); err != nil {
+		return err
+	}
+
+	chanWriteBack <- adapter.DBSave
+	return nil
 }
 
 func WriteBackDel(adapter Adapter) (err error) {
-	return adapter.DBRemove()
+	if err = adapter.Del(); err != nil {
+		return err
+	}
+
+	chanWriteBack <- adapter.DBRemove
+	return nil
 }
 
 var (
@@ -171,7 +181,7 @@ func Init() {
 	wgWriteBack.Go(func() {
 		for f := range chanWriteBack {
 			if err := f(); err != nil {
-				slog.Error("WriteBack error", err)
+				slog.Error("WriteBack", "error", err)
 			}
 		}
 	})
