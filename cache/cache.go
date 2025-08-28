@@ -6,11 +6,11 @@ import (
 )
 
 const (
-	ReadThrought  = 1
-	WriteThrought = 2
-	CacheAside    = 3
-	WriteAround   = 4
-	WriteBack     = 5
+	ReadThrough  = 1
+	WriteThrough = 2
+	CacheAside   = 3
+	WriteAround  = 4
+	WriteBack    = 5
 )
 
 type Adapter interface {
@@ -25,7 +25,7 @@ type Adapter interface {
 
 // 读取穿透模式
 // 先从缓存中获取数据，如果缓存中不存在，则从持久层加载数据，并将数据保存到缓存中
-func ReadThroughtGet(adapter Adapter) (err error) {
+func ReadThroughGet(adapter Adapter) (err error) {
 	// 先从缓存中获取数据
 	if err = adapter.Get(); err == nil {
 		return nil
@@ -41,12 +41,12 @@ func ReadThroughtGet(adapter Adapter) (err error) {
 }
 
 // 保存到持久层
-func ReadThroughtSet(adapter Adapter) (err error) {
+func ReadThroughSet(adapter Adapter) (err error) {
 	return adapter.DBSave()
 }
 
 // 删除持久层和缓存的数据
-func ReadThroughtDel(adapter Adapter) (err error) {
+func ReadThroughDel(adapter Adapter) (err error) {
 	if err = adapter.DBRemove(); err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func ReadThroughtDel(adapter Adapter) (err error) {
 
 // 写穿透模式
 // 先将数据保存到持久层，然后再将数据保存到缓存中
-func WriteThroughtGet(adapter Adapter) (err error) {
+func WriteThroughGet(adapter Adapter) (err error) {
 	if err = adapter.Get(); err == nil {
 		return nil
 	}
@@ -69,7 +69,7 @@ func WriteThroughtGet(adapter Adapter) (err error) {
 }
 
 // 同步保存到持久层和缓存
-func WriteThroughtSet(adapter Adapter) (err error) {
+func WriteThroughSet(adapter Adapter) (err error) {
 	if err = adapter.DBSave(); err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func WriteThroughtSet(adapter Adapter) (err error) {
 }
 
 // 删除持久层和缓存的数据
-func WriteThroughtDel(adapter Adapter) (err error) {
+func WriteThroughDel(adapter Adapter) (err error) {
 	if err = adapter.DBRemove(); err != nil {
 		return err
 	}
